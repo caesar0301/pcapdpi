@@ -1,6 +1,7 @@
 /*
  * pcapReader.c
  *
+ * Copyright (C) 2013 by chenxm
  * Copyright (C) 2011-13 - ntop.org
  * Copyright (C) 2009-2011 by ipoque GmbH
  *
@@ -62,6 +63,9 @@ static u_int64_t protocol_counter[NDPI_MAX_SUPPORTED_PROTOCOLS + NDPI_MAX_NUM_CU
 static u_int64_t protocol_counter_bytes[NDPI_MAX_SUPPORTED_PROTOCOLS + NDPI_MAX_NUM_CUSTOM_PROTOCOLS + 1];
 static u_int32_t protocol_flows[NDPI_MAX_SUPPORTED_PROTOCOLS + NDPI_MAX_NUM_CUSTOM_PROTOCOLS + 1] = { 0 };
 
+// log file
+static FILE *flow_info_file;
+static char *flow_info_file_name;
 
 #define GTP_U_V1_PORT      2152
 #define	MAX_NDPI_FLOWS	2000000
@@ -100,12 +104,13 @@ static u_int32_t ndpi_flow_count = 0;
 
 static void help(u_int long_help) {
   printf("pcapReader -i <file|device> [-f <filter>][-s <duration>]\n"
-	 "           [-p <protos>][-l <loops>[-d][-h][-t][-v]\n\n"
+	 "           [-p <protos>][-w <outfile>][-l <loops>[-d][-h][-t][-v]\n\n"
 	 "Usage:\n"
 	 "  -i <file.pcap|device>     | Specify a pcap file to read packets from or a device for live capture\n"
 	 "  -f <BPF filter>           | Specify a BPF filter for filtering selected traffic\n"
 	 "  -s <duration>             | Maximum capture duration in seconds (live traffic capture only)\n"
 	 "  -p <file>.protos          | Specify a protocol file (eg. protos.txt)\n"
+   "  -w <outfile>              | Specify a output file (default: out.dpi.csv) to save detectd result for each flow\n"
 	 "  -l <num loops>            | Number of detection loops (test only)\n"
 	 "  -d                        | Disable protocol guess and use only DPI\n"
 	 "  -t                        | Dissect GTP tunnels\n"
@@ -125,7 +130,7 @@ static void parseOptions(int argc, char **argv)
 {
   int opt;
 
-  while ((opt = getopt(argc, argv, "df:i:hp:l:s:tv")) != EOF) {
+  while ((opt = getopt(argc, argv, "df:i:hp:w:l:s:tv")) != EOF) {
     switch (opt) {
     case 'd':
       enable_protocol_guess = 0;
@@ -145,6 +150,10 @@ static void parseOptions(int argc, char **argv)
 
     case 'p':
       _protoFilePath = optarg;
+      break;
+
+    case 'w':
+      flow_info_file_name = optarg;
       break;
 
     case 's':
@@ -170,9 +179,9 @@ static void parseOptions(int argc, char **argv)
   }
 
   // check parameters
-  if (_pcap_file == NULL || strcmp(_pcap_file, "") == 0) {
-    help(0);
-  }
+  if (_pcap_file == NULL || strcmp(_pcap_file, "") == 0) help(0);
+  if (flow_info_file_name == NULL || strcmp(flow_info_file_name, "") == 0)
+    flow_info_file_name = "out.dpi.csv";  // default
 }
 
 static void debug_printf(u_int32_t protocol, void *id_struct,
@@ -259,6 +268,20 @@ static void printFlow(struct ndpi_flow *flow) {
 	 flow->packets, flow->bytes);
 }
 
+static void fPrintFlow(FILE *stream, struct ndpi_flow *flow) {
+  char buf1[32], buf2[32];
+
+  fprintf(stream, "%s %u %s %u %s %u/%s %u %u\n",
+   intoaV4(ntohl(flow->lower_ip), buf1, sizeof(buf1)),
+   ntohs(flow->lower_port),
+   intoaV4(ntohl(flow->upper_ip), buf2, sizeof(buf2)),
+   ntohs(flow->upper_port),
+   ipProto2Name(flow->protocol),
+   flow->detected_protocol,
+   ndpi_get_proto_name(ndpi_struct, flow->detected_protocol),
+   flow->packets, flow->bytes);
+}
+
 static void node_print_unknown_proto_walker(const void *node, ndpi_VISIT which, int depth) {
   struct ndpi_flow *flow = *(struct ndpi_flow**)node;
 
@@ -303,6 +326,13 @@ static void node_proto_guess_walker(const void *node, ndpi_VISIT which, int dept
     protocol_counter_bytes[flow->detected_protocol] += flow->bytes;
     protocol_flows[flow->detected_protocol]++;
   }
+}
+
+// 2013-03-16: added by chenxm to log detected results
+static void node_output_flow_info_walker(const void *node, ndpi_VISIT which, int depth) {
+  struct ndpi_flow *flow = *(struct ndpi_flow**)node;
+  if ( flow_info_file != NULL) fPrintFlow(flow_info_file, flow);
+  else {printf("Invalid file stream!\n"); exit(-1);}
 }
 
 static int node_cmp(const void *a, const void *b) {
@@ -579,6 +609,13 @@ static void printResults(void)
   if(verbose && (protocol_counter[0] > 0)) {
     printf("\n\nundetected flows:\n");
     ndpi_twalk(ndpi_flows_root, node_print_unknown_proto_walker);
+  }
+
+  if (1) {
+    flow_info_file = fopen(flow_info_file_name, "wb");
+    fputs("source_ip source_port dest_ip dest_port l4_proto detect_proto packets bytes\n", flow_info_file);
+    ndpi_twalk(ndpi_flows_root, node_output_flow_info_walker);
+    fclose(flow_info_file);
   }
 
   printf("\n\n");
