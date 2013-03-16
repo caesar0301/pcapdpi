@@ -391,8 +391,8 @@ static struct ndpi_flow *get_ndpi_flow(const struct ndpi_iphdr *iph, u_int16_t i
       struct ndpi_flow *newflow = (struct ndpi_flow*)malloc(sizeof(struct ndpi_flow));
 
       if(newflow == NULL) {
-	printf("[NDPI] %s(1): not enough memory\n", __FUNCTION__);
-	return(NULL);
+	    printf("[NDPI] %s(1): not enough memory\n", __FUNCTION__);
+	    return(NULL);
       }
 
       memset(newflow, 0, sizeof(struct ndpi_flow));
@@ -401,18 +401,18 @@ static struct ndpi_flow *get_ndpi_flow(const struct ndpi_iphdr *iph, u_int16_t i
       newflow->lower_port = lower_port, newflow->upper_port = upper_port;
 
       if((newflow->ndpi_flow = calloc(1, size_flow_struct)) == NULL) {
-	printf("[NDPI] %s(2): not enough memory\n", __FUNCTION__);
-	return(NULL);
+	    printf("[NDPI] %s(2): not enough memory\n", __FUNCTION__);
+	    return(NULL);
       }
 
       if((newflow->src_id = calloc(1, size_id_struct)) == NULL) {
-	printf("[NDPI] %s(3): not enough memory\n", __FUNCTION__);
-	return(NULL);
+	    printf("[NDPI] %s(3): not enough memory\n", __FUNCTION__);
+	    return(NULL);
       }
 
       if((newflow->dst_id = calloc(1, size_id_struct)) == NULL) {
-	printf("[NDPI] %s(4): not enough memory\n", __FUNCTION__);
-	return(NULL);
+	    printf("[NDPI] %s(4): not enough memory\n", __FUNCTION__);
+	    return(NULL);
       }
 
       ndpi_tsearch(newflow, (void*)&ndpi_flows_root, node_cmp); /* Add */
