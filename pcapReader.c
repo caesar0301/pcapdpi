@@ -68,7 +68,7 @@ static FILE *flow_info_file;
 static char *flow_info_file_name;
 
 #define GTP_U_V1_PORT      2152
-#define	MAX_NDPI_FLOWS	2000000
+#define	MAX_NDPI_FLOWS     20000000
 // id tracking
 typedef struct ndpi_id {
   u_int8_t ip[4];
