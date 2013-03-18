@@ -87,6 +87,8 @@ typedef struct ndpi_flow {
   u_int32_t upper_ip;
   u_int16_t lower_port;
   u_int16_t upper_port;
+  u_int32_t first_packet_time_sec;
+  u_int32_t first_packet_time_usec;
   u_int8_t detection_completed, protocol;
   struct ndpi_flow_struct *ndpi_flow;
 
@@ -271,11 +273,12 @@ static void printFlow(struct ndpi_flow *flow) {
 static void fPrintFlow(FILE *stream, struct ndpi_flow *flow) {
   char buf1[32], buf2[32];
 
-  fprintf(stream, "%s %u %s %u %s %u/%s %u %u\n",
+  fprintf(stream, "%s %u %s %u %.6f %s %u/%s %u %u\n",
    intoaV4(ntohl(flow->lower_ip), buf1, sizeof(buf1)),
    ntohs(flow->lower_port),
    intoaV4(ntohl(flow->upper_ip), buf2, sizeof(buf2)),
    ntohs(flow->upper_port),
+   flow->first_packet_time_sec + flow->first_packet_time_usec/1000000.0,
    ipProto2Name(flow->protocol),
    flow->detected_protocol,
    ndpi_get_proto_name(ndpi_struct, flow->detected_protocol),
@@ -331,7 +334,9 @@ static void node_proto_guess_walker(const void *node, ndpi_VISIT which, int dept
 // 2013-03-16: added by chenxm to log detected results
 static void node_output_flow_info_walker(const void *node, ndpi_VISIT which, int depth) {
   struct ndpi_flow *flow = *(struct ndpi_flow**)node;
-  if ( flow_info_file != NULL) fPrintFlow(flow_info_file, flow);
+  if ( flow_info_file != NULL){
+    if ((which == preorder) || (which == leaf)) fPrintFlow(flow_info_file, flow);
+  }
   else {printf("Invalid file stream!\n"); exit(-1);}
 }
 
@@ -349,7 +354,8 @@ static int node_cmp(const void *a, const void *b) {
 }
 
 
-static struct ndpi_flow *get_ndpi_flow(const struct ndpi_iphdr *iph, u_int16_t ipsize)
+static struct ndpi_flow *get_ndpi_flow(const struct pcap_pkthdr *header, 
+                          const struct ndpi_iphdr *iph, u_int16_t ipsize)
 {
   u_int32_t i;
   u_int16_t l4_packet_len;
@@ -410,6 +416,8 @@ static struct ndpi_flow *get_ndpi_flow(const struct ndpi_iphdr *iph, u_int16_t i
   flow.upper_ip = upper_ip;
   flow.lower_port = lower_port;
   flow.upper_port = upper_port;
+  flow.first_packet_time_sec = header->ts.tv_sec;
+  flow.first_packet_time_usec = header->ts.tv_usec;
 
   ret = ndpi_tfind(&flow, (void*)&ndpi_flows_root, node_cmp);
 
@@ -429,6 +437,8 @@ static struct ndpi_flow *get_ndpi_flow(const struct ndpi_iphdr *iph, u_int16_t i
       newflow->protocol = iph->protocol;
       newflow->lower_ip = lower_ip, newflow->upper_ip = upper_ip;
       newflow->lower_port = lower_port, newflow->upper_port = upper_port;
+      newflow->first_packet_time_sec = header->ts.tv_sec;
+      newflow->first_packet_time_usec = header->ts.tv_usec;
 
       if((newflow->ndpi_flow = calloc(1, size_flow_struct)) == NULL) {
 	    printf("[NDPI] %s(2): not enough memory\n", __FUNCTION__);
@@ -507,8 +517,8 @@ static void terminateDetection(void)
   ndpi_exit_detection_module(ndpi_struct, free_wrapper);
 }
 
-static unsigned int packet_processing(const u_int64_t time, const struct ndpi_iphdr *iph,
-				      u_int16_t ipsize, u_int16_t rawsize)
+static unsigned int packet_processing(const u_int64_t time, const struct pcap_pkthdr *header,
+              const struct ndpi_iphdr *iph, u_int16_t ipsize, u_int16_t rawsize)
 {
   struct ndpi_id_struct *src, *dst;
   struct ndpi_flow *flow;
@@ -516,7 +526,7 @@ static unsigned int packet_processing(const u_int64_t time, const struct ndpi_ip
   u_int32_t protocol = 0;
   u_int16_t frag_off = ntohs(iph->frag_off);
 
-  flow = get_ndpi_flow(iph, ipsize);
+  flow = get_ndpi_flow(header, iph, ipsize);
   if (flow != NULL) {
     ndpi_flow = flow->ndpi_flow;
     flow->packets++, flow->bytes += rawsize;
@@ -613,7 +623,7 @@ static void printResults(void)
 
   if (1) {
     flow_info_file = fopen(flow_info_file_name, "wb");
-    fputs("source_ip source_port dest_ip dest_port l4_proto detect_proto packets bytes\n", flow_info_file);
+    fputs("source_ip source_port dest_ip dest_port first_packet_time l4_proto detect_proto packets bytes\n", flow_info_file);
     ndpi_twalk(ndpi_flows_root, node_output_flow_info_walker);
     fclose(flow_info_file);
   }
@@ -762,7 +772,7 @@ static void pcap_packet_callback(u_char * args, const struct pcap_pkthdr *header
     }
 
     // process the packet
-    packet_processing(time, iph, header->len - ip_offset, header->len);
+    packet_processing(time, header, iph, header->len - ip_offset, header->len);
   }
 }
 
