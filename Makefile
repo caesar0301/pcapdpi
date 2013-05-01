@@ -1,8 +1,8 @@
 INC=-I/usr/local/include/libndpi-1.4/libndpi/
 LIB=-lpcap -lndpi
 
-pcapReader: pcapReader.c Makefile
-	gcc -g pcapReader.c -o pcapReader $(INC) $(LIB)
+pcapDPI: pcapReader.c Makefile
+	gcc -g pcapReader.c -o pcapDPI $(INC) $(LIB)
 
 clean:
-	\/bin/rm -f pcapReader
+	\/bin/rm -f pcapDPI
