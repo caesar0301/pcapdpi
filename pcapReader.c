@@ -285,7 +285,7 @@ static void fPrintFlow(FILE *stream, struct ndpi_flow *flow) {
    flow->packets, flow->bytes);
 }
 
-static void node_print_unknown_proto_walker(const void *node, ndpi_VISIT which, int depth) {
+static void node_print_unknown_proto_walker(const void *node, ndpi_VISIT which, int depth, void *user_data) {
   struct ndpi_flow *flow = *(struct ndpi_flow**)node;
 
   if (flow->detected_protocol != 0 /* UNKNOWN */) return;
@@ -294,7 +294,7 @@ static void node_print_unknown_proto_walker(const void *node, ndpi_VISIT which, 
     printFlow(flow);
 }
 
-static void node_proto_guess_walker(const void *node, ndpi_VISIT which, int depth) {
+static void node_proto_guess_walker(const void *node, ndpi_VISIT which, int depth, void *user_data) {
   struct ndpi_flow *flow = *(struct ndpi_flow**)node;
   char buf1[32], buf2[32];
 
@@ -332,7 +332,7 @@ static void node_proto_guess_walker(const void *node, ndpi_VISIT which, int dept
 }
 
 // 2013-03-16: added by chenxm to log detected results
-static void node_output_flow_info_walker(const void *node, ndpi_VISIT which, int depth) {
+static void node_output_flow_info_walker(const void *node, ndpi_VISIT which, int depth, void *user_data) {
   struct ndpi_flow *flow = *(struct ndpi_flow**)node;
   if ( flow_info_file != NULL){
     if ((which == preorder) || (which == leaf)) fPrintFlow(flow_info_file, flow);
@@ -602,7 +602,7 @@ static void printResults(void)
 	 (long long unsigned int)total_bytes);
   printf("\tunique flows: \x1b[36m%-13u\x1b[0m\n", ndpi_flow_count);
 
-  ndpi_twalk(ndpi_flows_root, node_proto_guess_walker);
+  ndpi_twalk(ndpi_flows_root, node_proto_guess_walker, NULL);
   if(enable_protocol_guess)
     printf("\tguessed flow protocols: \x1b[35m%-13u\x1b[0m\n", guessed_flow_protocols);
 
@@ -618,13 +618,13 @@ static void printResults(void)
 
   if(verbose && (protocol_counter[0] > 0)) {
     printf("\n\nundetected flows:\n");
-    ndpi_twalk(ndpi_flows_root, node_print_unknown_proto_walker);
+    ndpi_twalk(ndpi_flows_root, node_print_unknown_proto_walker, NULL);
   }
 
   if (1) {
     flow_info_file = fopen(flow_info_file_name, "wb");
     fputs("source_ip source_port dest_ip dest_port first_packet_time l4_proto detect_proto packets bytes\n", flow_info_file);
-    ndpi_twalk(ndpi_flows_root, node_output_flow_info_walker);
+    ndpi_twalk(ndpi_flows_root, node_output_flow_info_walker, NULL);
     fclose(flow_info_file);
   }
 
@@ -797,13 +797,6 @@ int main(int argc, char **argv)
   int i;
 
   parseOptions(argc, argv);
-
-  printf("\n-----------------------------------------------------------\n"
-	 "* NOTE: This is demo app to show *some* nDPI features.\n"
-	 "* In this demo we have implemented only some basic features\n"
-	 "* just to show you what you can do with the library. Feel \n"
-	 "* free to extend it and send us the patches for inclusion\n"
-	 "------------------------------------------------------------\n\n");
 
   for(i=0; i<num_loops; i++)
     test_lib();
