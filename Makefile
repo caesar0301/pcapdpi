@@ -5,4 +5,4 @@ pcapDPI: pcapReader.c Makefile
 	gcc -g pcapReader.c -o pcapDPI $(INC) $(LIB)
 
 clean:
-	\/bin/rm -f pcapReader
+	\/bin/rm -f pcapDPI
