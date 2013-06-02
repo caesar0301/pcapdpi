@@ -5,9 +5,9 @@ A program modified based on the nDPI example in the source package
 to use nDPI (openDPI) interfaces to detect flow protocols.
 
 Modifications
-=======
+-----------
 
-Add a -w option.
+Add a `-w` option to the example program in nDPI.
 
 Add a simple tree walker of the internal search tree implemented
 by nDPI to index flows efficiently.
@@ -21,24 +21,35 @@ of data processing softwares. A piece of text for ex.
 	210.46.79.1 51752 202.233.233.233 27955 TCP 0/Unknown 3 194
 	192.88.99.1 0 202.233.233.233 0 41 0/Unknown 485 64975
 
-How To Use
-========
+How To Install
+------------
 
-First, you must have nDPI installed. A standard linux package installation
-operation can make it available in your system. Note: After `make install`,
-you should copy all the header files in src/include folder to your local include
-path. Some of these headers are required but not installed with this command.
+Users can make pcapDPI work following two steps:
 
-Finally, you will have libndpi-header-file folder in your local include path and libndpi** 
-in your local library path. For example, on my system, "/usr/local/include/libndpi-1.4/libndpi/"
-contains all the headers "/usr/local/lib" stores all the libndpi.**.
 
-If the `make` command under pcapDPI folder can't find these .h and/or libraries from your system 
-envirement variables, you can edit the Makefile with INC and/or LIB variables to search
+First, you must have nDPI installed. nDPI can be obtained from its website: http://www.ntop.org/products/ndpi/ and
+a standard linux package installation operation can be made to install it on your system.
+
+
+* COPY HEADER FILES MANUALLY: some header files like `linux_compact.h` are not installed by default when installing
+nDPI with command `make install`. You should copy them into your local include path manually. E.g., on my computer
+running Ubuntu 12.04 32bit, run following commands to get there:
+
+
+        $cd nDPI 
+        $cp src/include/*.h /usr/local/include/libndpi-1.4/libndpi/
+
+
+Second, download pcapDPI from https://github.com/caesar0301/pcapDPI and simply run `make` to compile it.
+
+
+* NOTE: if the `make` command raises errors about finding header files and/or libraries in your system 
+envirement variables, you can edit the Makefile with `INC` and/or `LIB` variables to search
 your local folders.
 
-Happy working.
+
+Happy coding.
+
 
 by chenxm
 2013-03-16
-
