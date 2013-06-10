@@ -110,7 +110,7 @@ static u_int32_t ndpi_flow_count = 0;
 // flow timeout
 static u_int32_t tree_clear_timestamp = 0;
 static u_int32_t CLEAN_TICK = 5; // seconds
-static u_int32_t FLOW_TIMEOUT = 5; // 15 mins
+static u_int32_t FLOW_TIMEOUT = 60 * 15; // 15 mins
 static struct ndpi_flow *flow_hooker_root = NULL;
 
 
@@ -832,6 +832,10 @@ static void pcap_packet_callback(u_char * args, const struct pcap_pkthdr *header
 		struct timeval tv;
 		struct timezone tz;
 		gettimeofday(&tv, &tz);
+		if ( tree_clear_timestamp <= 0 ){
+			tree_clear_timestamp = tv.tv_sec;
+			return;
+		}
 		if ( (tv.tv_sec - tree_clear_timestamp ) > CLEAN_TICK ){
 			// do cleaning
 			ndpi_twalk(ndpi_flows_root, node_complete_timeout_flow_walker, NULL);
