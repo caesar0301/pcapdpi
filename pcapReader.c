@@ -109,7 +109,7 @@ static u_int32_t ndpi_flow_count = 0;
 
 // flow timeout
 static u_int32_t tree_clear_timestamp = 0;
-static u_int32_t CLEAN_TICK = 5; // seconds
+static u_int32_t CLEAN_TICK = 2; // seconds
 static u_int32_t FLOW_TIMEOUT = 60 * 15; // 15 mins
 static struct ndpi_flow *flow_hooker_root = NULL;
 
