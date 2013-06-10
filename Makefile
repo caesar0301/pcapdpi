@@ -1,4 +1,4 @@
-INC=-I/usr/local/include/libndpi-1.4/libndpi/
+INC=-I/usr/local/include/libndpi-1.4/libndpi/ -I.
 LIB=-lpcap -lndpi
 
 pcapDPI: pcapReader.c Makefile
