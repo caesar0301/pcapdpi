@@ -132,16 +132,16 @@ static void help(u_int long_help) {
 	printf("pcapReader -i <file|device> [-f <filter>][-s <duration>]\n"
 	 "					 [-p <protos>][-w <outfile>][-l <loops>[-d][-h][-t][-v]\n\n"
 	 "Usage:\n"
-	 "	-i <file.pcap|device>		 | Specify a pcap file to read packets from or a device for live capture\n"
-	 "	-f <BPF filter>					 | Specify a BPF filter for filtering selected traffic\n"
-	 "	-s <duration>						 | Maximum capture duration in seconds (live traffic capture only)\n"
-	 "	-p <file>.protos					| Specify a protocol file (eg. protos.txt)\n"
-	 "	-w <outfile>							| Specify a output file (default: out.dpi.csv) to save detectd result for each flow\n"
-	 "	-l <num loops>						| Number of detection loops (test only)\n"
-	 "	-d												| Disable protocol guess and use only DPI\n"
-	 "	-t												| Dissect GTP tunnels\n"
-	 "	-h												| This help\n"
-	 "	-v												| Verbose 'unknown protocol' packet print\n");
+	 "	-i <file.pcap|device>		| Specify a pcap file to read packets from or a device for live capture\n"
+	 "	-f <BPF filter>			| Specify a BPF filter for filtering selected traffic\n"
+	 "	-s <duration>			| Maximum capture duration in seconds (live traffic capture only)\n"
+	 "	-p <file>.protos		| Specify a protocol file (eg. protos.txt)\n"
+	 "	-w <outfile>			| Specify a output file (default: out.dpi.csv) to save detectd result for each flow\n"
+	 "	-l <num loops>			| Number of detection loops (test only)\n"
+	 "	-d				| Disable protocol guess and use only DPI\n"
+	 "	-t				| Dissect GTP tunnels\n"
+	 "	-h				| This help\n"
+	 "	-v				| Verbose 'unknown protocol' packet print\n");
 
 	if(long_help) {
 		printf("\n\nSupported protocols:\n");
