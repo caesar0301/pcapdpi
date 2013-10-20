@@ -433,7 +433,7 @@ static void node_complete_timeout_flow_walker(const void *node, ndpi_VISIT which
 // Otherwise, add the packet to the ndpi flow
 // Return the flow.
 static struct ndpi_flow *get_ndpi_flow(const struct pcap_pkthdr *header,
-                                                    const struct ndpi_iphdr *iph, u_int16_t ipsize)
+                                        const struct ndpi_iphdr *iph, u_int16_t ipsize)
 {
     u_int32_t i;
     u_int16_t l4_packet_len;
@@ -507,8 +507,8 @@ static struct ndpi_flow *get_ndpi_flow(const struct pcap_pkthdr *header,
             struct ndpi_flow *newflow = (struct ndpi_flow*)malloc(sizeof(struct ndpi_flow));
 
             if(newflow == NULL) {
-            printf("[NDPI] %s(1): not enough memory\n", __FUNCTION__);
-            return(NULL);
+                printf("[NDPI] %s(1): not enough memory\n", __FUNCTION__);
+                return(NULL);
             }
 
             memset(newflow, 0, sizeof(struct ndpi_flow));
@@ -522,18 +522,18 @@ static struct ndpi_flow *get_ndpi_flow(const struct pcap_pkthdr *header,
             newflow->last_packet_time_usec = header->ts.tv_usec;
 
             if((newflow->ndpi_flow = calloc(1, size_flow_struct)) == NULL) {
-            printf("[NDPI] %s(2): not enough memory\n", __FUNCTION__);
-            return(NULL);
+                printf("[NDPI] %s(2): not enough memory\n", __FUNCTION__);
+                return(NULL);
             }
 
             if((newflow->src_id = calloc(1, size_id_struct)) == NULL) {
-            printf("[NDPI] %s(3): not enough memory\n", __FUNCTION__);
-            return(NULL);
+                printf("[NDPI] %s(3): not enough memory\n", __FUNCTION__);
+                return(NULL);
             }
 
             if((newflow->dst_id = calloc(1, size_id_struct)) == NULL) {
-            printf("[NDPI] %s(4): not enough memory\n", __FUNCTION__);
-            return(NULL);
+                printf("[NDPI] %s(4): not enough memory\n", __FUNCTION__);
+                return(NULL);
             }
 
             ndpi_tsearch(newflow, (void*)&ndpi_flows_root, node_cmp); /* Add */
@@ -627,7 +627,7 @@ static unsigned int packet_processing(const u_int64_t time, const struct pcap_pk
     }
 
     flow->detected_protocol = protocol;
-    if((flow->detected_protocol != NDPI_PROTOCOL_UNKNOWN)
+    if((iph->protocol == IPPROTO_TCP && flow->detected_protocol != NDPI_PROTOCOL_UNKNOWN)
         //|| (iph->protocol == IPPROTO_UDP)
         //|| ((iph->protocol == IPPROTO_TCP) && (flow->packets > 10))
         /* To make sure flow statistics is right. */
