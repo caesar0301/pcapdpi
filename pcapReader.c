@@ -387,7 +387,7 @@ static int node_cmp(const void *a, const void *b) {
 
 static struct ndpi_flow *flow_hooker_root = NULL;
 static struct ndpi_flow *flow_hooker_tail = NULL;
-static u_int64_t FLOW_TIMEOUT = 60 * 15; // 15 mins
+static u_int64_t FLOW_TIMEOUT = 60 * 5; // 15 mins
 
 // remove nodes from flow tree if detection is complete or timeout threshold met (for TCP only)
 static void node_complete_timeout_flow_walker(const void *node, ndpi_VISIT which, int depth, void *user_data) {
@@ -398,7 +398,7 @@ static void node_complete_timeout_flow_walker(const void *node, ndpi_VISIT which
         double timediff = difftime(now_time, flow->last_packet_time_sec) - FLOW_TIMEOUT;
         // Do this clean-out for TCP flow only.
         // It will introduce bias for UDP flows
-        if ( flow->protocol == IPPROTO_TCP && (timediff > 0 || flow->detection_completed) ){
+        if ( timediff > 0 || (flow->protocol == IPPROTO_TCP && flow->detection_completed) ){
             // mark it as completed
             flow->detection_completed = 1;
             // clean timeout flows with guess if enabled
