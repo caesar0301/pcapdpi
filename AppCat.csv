@@ -1,164 +1,164 @@
-#ID,ShortDesp,Category
-1,FTP,FileService
-2,POP,Mail
-3,SMTP,Mail
-4,IMAP,Mail
-5,DNS,NetMan
-6,IPP,Productivity
-7,HTTP,HTTP
-8,MDNS,NetMan
-9,NTP,NetMan
-10,NETBIOS,NetMan
-11,NFS,FileService
-12,SSDP,NetMan
-13,BGP,NetMan
-14,SNMP,NetMan
-15,XDMCP,RemoteLogin
-16,SMB,FileService
-17,SYSLOG,NetMan
-18,DHCP,NetMan
-19,PostgreSQL,Database
-20,MySQL,Database
-21,TDS,FileSharing
-22,DirectDownloadLink,FileSharing
-23,I23V5,Other
-24,AppleJuice,P2P
-25,DirectConnect,P2P
-26,Socrates,P2P
-27,WinMX,P2P
-28,VMware,Other
-29,PANDO,P2P
-30,Filetopia,FileSharing
-31,iMESH,P2P
-32,Kontiki,P2P
-33,OpenFT,P2P
-34,KazaaFasttrack,P2P
-35,Gnutella,P2P
-36,eDonkey,P2P
-37,Bittorrent,P2P
-38,OFF,
-39,AVI,Streaming
-40,Flash,Streaming
-41,OGG,Streaming
-42,MPEG,Streaming
-43,QuickTime,Streaming
-44,RealMedia,Streaming
-45,Windowsmedia,Streaming
-46,MMS,Streaming
-47,XBOX,Gaming
-48,QQ,InstantMessaging
-49,MOVE,Streaming
-50,RTSP,Streaming
-51,Feidian,Streaming
-52,Icecast,Streaming
-53,PPLive,Streaming
-54,PPStream,Streaming
-55,Zattoo,Streaming
-56,SHOUTCast,Streaming
-57,SopCast,Streaming
-58,TVAnts,Streaming
-59,TVUplayer,Streaming
-60,VeohTV,Streaming
-61,QQLive,Streaming
-62,Thunder,P2P
-63,Soulseek,P2P
-64,GaduGadu,InstantMessaging
-65,IRC,InstantMessaging
-66,Popo,InstantMessaging
-67,Jabber,InstantMessaging
-68,MSN,InstantMessaging
-69,Oscar,InstantMessaging
-70,Yahoo,InstantMessaging
-71,Battlefield,Gaming
-72,Quake,Gaming
-73,VRRP,NetMan
-74,Steam,Gaming
-75,Halflife2,Gaming
-76,WorldofWarcraft,Gaming
-77,Telnet,RemoteLogin
-78,STUN,NetMan
-79,IPSEC,NetMan
-80,GRE,NetMan
-81,ICMP,NetMan
-82,IGMP,NetMan
-83,EGP,NetMan
-84,SCTP,NetMan
-85,OSPF,NetMan
-86,IPinIP,NetMan
-87,RTP,NetMan
-88,RDP,RemoteLogin
-89,VNC,RemoteLogin
-90,PCAnywhere,RemoteLogin
-91,SSL,NetMan
-92,SSH,RemoteLogin
-93,USENET,News
-94,MGCP,NetMan
-95,IAX,VoIP
-96,TFTP,FileService
-97,AFP,FileService
-98,StealthNet,P2P
-99,Aimini,
-100,SIP,InstantMessaging
-101,Truphone,InstantMessaging
-102,ICMPv6,NetMan
-103,DHCPv6,NetMan
-104,Armagetron,Gaming
-105,CrossFire,Gaming
-106,Dofus,Gaming
-107,Fiesta,Gaming
-108,Florensia,Gaming
-109,Guildwars,Gaming
-110,HTTPApplicationActiveSync,NetMan
-111,Kerberos,Authentication
-112,LDAP,Authentication
-113,MapleStory,Gaming
-114,msSQL,Database
-115,PPTP,Privacy
-116,WARCRAFT3,Gaming
-117,WorldofKungFu,Gaming
-118,MEEBO,Social
-119,FaceBook,Social
-120,Twitter,Social
-121,DropBox,FileService
-122,Gmail,Mail
-123,GoogleMaps,Maps
-124,YouTube,Streaming
-125,Skype,InstantMessaging
-126,Google,Google
-127,DCERPC,NetMan
-128,NetFlowIPFIX,NetMan
-129,sFlow,NetMan
-130,HTTPConnect,Privacy
-131,HTTPProxy,HTTP
-132,Netflix,Streaming
-133,Citrix,InstantMessaging
-134,CitrixOnline,InstantMessaging
-135,Apple,InstantMessaging
-136,Webex,InstantMessaging
-137,WhatsApp,InstantMessaging
-138,AppleiCloud,FileService
-139,Viber,InstantMessaging
-140,AppleiTunes,Streaming
-141,Radius,Authentication
-142,WindowsUpdate,Update
-143,TeamViewer,InstantMessaging
-144,Tuenti,Social
-145,LotusNotes,InstantMessaging
-146,SAP,NetMan
-147,GTP,NetMan
-148,UPnP,NetMan
-149,LLMNR,NetMan
-150,RemoteScan,NetMan
-151,Spotify,P2P
-152,H323,Other
-153,OpenVPN,Privacy
-154,NOE,Other
-155,CiscoVPN,Privacy
-156,TeamSpeak,InstantMessaging
-157,Tor,Privacy
-158,CiscoSkinny,InstantMessaging
-159,RTCP,NetMan
-160,RSYNC,FileService
-161,Oracle,Oracle
-162,Corba,NetMan
-163,UbuntuONE,FileService
++ACM-ID	ShortDesp	Category
+1	FTP	FileService
+2	POP	Mail
+3	SMTP	Mail
+4	IMAP	Mail
+5	DNS	NetMan
+6	IPP	Productivity
+7	HTTP	HTTP
+8	MDNS	NetMan
+9	NTP	NetMan
+10	NETBIOS	NetMan
+11	NFS	FileService
+12	SSDP	NetMan
+13	BGP	NetMan
+14	SNMP	NetMan
+15	XDMCP	RemoteLogin
+16	SMB	FileService
+17	SYSLOG	NetMan
+18	DHCP	NetMan
+19	PostgreSQL	Database
+20	MySQL	Database
+21	TDS	FileSharing
+22	DirectDownloadLink	FileSharing
+23	I23V5	Other
+24	AppleJuice	P2P
+25	DirectConnect	P2P
+26	Socrates	P2P
+27	WinMX	P2P
+28	VMware	Other
+29	PANDO	P2P
+30	Filetopia	FileSharing
+31	iMESH	P2P
+32	Kontiki	P2P
+33	OpenFT	P2P
+34	KazaaFasttrack	P2P
+35	Gnutella	P2P
+36	eDonkey	P2P
+37	Bittorrent	P2P
+38	OFF	Other
+39	AVI	Streaming
+40	Flash	Streaming
+41	OGG	Streaming
+42	MPEG	Streaming
+43	QuickTime	Streaming
+44	RealMedia	Streaming
+45	Windowsmedia	Streaming
+46	MMS	Streaming
+47	XBOX	Gaming
+48	QQ	InstantMessaging
+49	MOVE	Streaming
+50	RTSP	Streaming
+51	Feidian	Streaming
+52	Icecast	Streaming
+53	PPLive	Streaming
+54	PPStream	Streaming
+55	Zattoo	Streaming
+56	SHOUTCast	Streaming
+57	SopCast	Streaming
+58	TVAnts	Streaming
+59	TVUplayer	Streaming
+60	VeohTV	Streaming
+61	QQLive	Streaming
+62	Thunder	P2P
+63	Soulseek	P2P
+64	GaduGadu	InstantMessaging
+65	IRC	InstantMessaging
+66	Popo	InstantMessaging
+67	Jabber	InstantMessaging
+68	MSN	InstantMessaging
+69	Oscar	InstantMessaging
+70	Yahoo	InstantMessaging
+71	Battlefield	Gaming
+72	Quake	Gaming
+73	VRRP	NetMan
+74	Steam	Gaming
+75	Halflife2	Gaming
+76	WorldofWarcraft	Gaming
+77	Telnet	RemoteLogin
+78	STUN	NetMan
+79	IPSEC	NetMan
+80	GRE	NetMan
+81	ICMP	NetMan
+82	IGMP	NetMan
+83	EGP	NetMan
+84	SCTP	NetMan
+85	OSPF	NetMan
+86	IPinIP	NetMan
+87	RTP	NetMan
+88	RDP	RemoteLogin
+89	VNC	RemoteLogin
+90	PCAnywhere	RemoteLogin
+91	SSL	NetMan
+92	SSH	RemoteLogin
+93	USENET	News
+94	MGCP	NetMan
+95	IAX	VoIP
+96	TFTP	FileService
+97	AFP	FileService
+98	StealthNet	P2P
+99	Aimini	Streaming
+100	SIP	InstantMessaging
+101	Truphone	InstantMessaging
+102	ICMPv6	NetMan
+103	DHCPv6	NetMan
+104	Armagetron	Gaming
+105	CrossFire	Gaming
+106	Dofus	Gaming
+107	Fiesta	Gaming
+108	Florensia	Gaming
+109	Guildwars	Gaming
+110	HTTPApplicationActiveSync	NetMan
+111	Kerberos	Authentication
+112	LDAP	Authentication
+113	MapleStory	Gaming
+114	msSQL	Database
+115	PPTP	Privacy
+116	WARCRAFT3	Gaming
+117	WorldofKungFu	Gaming
+118	MEEBO	Social
+119	FaceBook	Social
+120	Twitter	Social
+121	DropBox	FileService
+122	Gmail	Mail
+123	GoogleMaps	Maps
+124	YouTube	Streaming
+125	Skype	InstantMessaging
+126	Google	Google
+127	DCERPC	NetMan
+128	NetFlowIPFIX	NetMan
+129	sFlow	NetMan
+130	HTTPConnect	Privacy
+131	HTTPProxy	HTTP
+132	Netflix	Streaming
+133	Citrix	InstantMessaging
+134	CitrixOnline	InstantMessaging
+135	Apple	InstantMessaging
+136	Webex	InstantMessaging
+137	WhatsApp	InstantMessaging
+138	AppleiCloud	FileService
+139	Viber	InstantMessaging
+140	AppleiTunes	Streaming
+141	Radius	Authentication
+142	WindowsUpdate	Update
+143	TeamViewer	InstantMessaging
+144	Tuenti	Social
+145	LotusNotes	InstantMessaging
+146	SAP	NetMan
+147	GTP	NetMan
+148	UPnP	NetMan
+149	LLMNR	NetMan
+150	RemoteScan	NetMan
+151	Spotify	P2P
+152	H323	Other
+153	OpenVPN	Privacy
+154	NOE	Other
+155	CiscoVPN	Privacy
+156	TeamSpeak	InstantMessaging
+157	Tor	Privacy
+158	CiscoSkinny	InstantMessaging
+159	RTCP	NetMan
+160	RSYNC	FileService
+161	Oracle	Oracle
+162	Corba	NetMan
+163	UbuntuONE	FileService
