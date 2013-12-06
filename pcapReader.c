@@ -92,11 +92,12 @@ typedef struct ndpi_flow {
     u_int32_t first_packet_time_usec;
     u_int32_t last_packet_time_sec;
     u_int32_t last_packet_time_usec;
-    u_int8_t detection_completed, protocol;
+    u_int8_t detection_completed;
+    u_int8_t protocol;  // IP protocol
     struct ndpi_flow_struct *ndpi_flow;
     
     u_int16_t packets, bytes;
-    // result only, not used for flow identification
+    // layer-7 protocol
     u_int32_t detected_protocol;
     // hooker only
     struct ndpi_flow *next;
@@ -386,15 +387,17 @@ static int node_cmp(const void *a, const void *b) {
 
 static struct ndpi_flow *flow_hooker_root = NULL;
 static struct ndpi_flow *flow_hooker_tail = NULL;
-static u_int64_t FLOW_TIMEOUT = 60 * 15; // 15 mins
-// remove nodes from flow tree if detection is complete or timeout threshold met.
+static u_int64_t FLOW_TIMEOUT = 60 * 150000; // 15 mins
+// remove nodes from flow tree if detection is complete or timeout threshold met (for TCP only)
 static void node_complete_timeout_flow_walker(const void *node, ndpi_VISIT which, int depth, void *user_data) {
     struct ndpi_flow *flow = *(struct ndpi_flow**)node;
     time_t now_time = *(time_t*)user_data;
 
     if ((which == preorder) || (which == leaf)){
         double timediff = difftime(now_time, flow->last_packet_time_sec) - FLOW_TIMEOUT;
-        if ( timediff > 0 || flow->detection_completed ){
+        // Do this clean-out for TCP flow only.
+        // It will introduce bias for UDP flows
+        if ( flow->protocol == IPPROTO_TCP && (timediff > 0 || flow->detection_completed) ){
             // mark it as completed
             flow->detection_completed = 1;
             // clean timeout flows with guess if enabled
