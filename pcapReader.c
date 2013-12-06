@@ -217,7 +217,7 @@ static char* intoaV4(unsigned int addr, char* buf, u_short bufLen) {
     return(retStr);
 }
 
-//********** /utilities ************
+//********** utilities ************
 
 
 // PARSER COMMAND LINE OPTIONS
@@ -387,7 +387,7 @@ static int node_cmp(const void *a, const void *b) {
 
 static struct ndpi_flow *flow_hooker_root = NULL;
 static struct ndpi_flow *flow_hooker_tail = NULL;
-static u_int64_t FLOW_TIMEOUT = 60 * 150000; // 15 mins
+static u_int64_t FLOW_TIMEOUT = 60 * 15; // 15 mins
 // remove nodes from flow tree if detection is complete or timeout threshold met (for TCP only)
 static void node_complete_timeout_flow_walker(const void *node, ndpi_VISIT which, int depth, void *user_data) {
     struct ndpi_flow *flow = *(struct ndpi_flow**)node;
