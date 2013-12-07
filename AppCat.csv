@@ -1,4 +1,5 @@
 ID	ShortDesp	Category
+0	Unknown	Other
 1	FTP	FileService
 2	POP	Mail
 3	SMTP	Mail
@@ -19,8 +20,8 @@ ID	ShortDesp	Category
 18	DHCP	NetMan
 19	PostgreSQL	Database
 20	MySQL	Database
-21	TDS	FileSharing
-22	DirectDownloadLink	FileSharing
+21	TDS	FileService
+22	DirectDownloadLink	FileService
 23	I23V5	Other
 24	AppleJuice	P2P
 25	DirectConnect	P2P
@@ -28,7 +29,7 @@ ID	ShortDesp	Category
 27	WinMX	P2P
 28	VMware	Other
 29	PANDO	P2P
-30	Filetopia	FileSharing
+30	Filetopia	FileService
 31	iMESH	P2P
 32	Kontiki	P2P
 33	OpenFT	P2P
