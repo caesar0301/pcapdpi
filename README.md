@@ -48,7 +48,14 @@ envirement variables, you can edit the Makefile with `INC` and/or `LIB` variable
 your local folders.
 
 
-Happy coding.
+AppCat.csv
+--------------
+
+A manual classification of application protocols identified by nDPI.
+The application ID comes from nDPIsrc/include/ndpi_protocols_osdpi.h
+
+
+Enjoy.
 
 
 by chenxm
