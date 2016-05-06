@@ -94,7 +94,7 @@ typedef struct ndpi_flow {
 
   u_int16_t packets, bytes;
   // result only, not used for flow identification
-  u_int32_t detected_protocol;
+  u_int16_t detected_protocol;
 
   void *src_id, *dst_id;
 } ndpi_flow_t;
@@ -311,12 +311,13 @@ static void node_proto_guess_walker(const void *node, ndpi_VISIT which, int dept
   if((which == preorder) || (which == leaf)) { /* Avoid walking the same node multiple times */
     if(enable_protocol_guess) {
       if (flow->detected_protocol == 0 /* UNKNOWN */) {
-	flow->detected_protocol = ndpi_guess_undetected_protocol(ndpi_struct,
+	 ndpi_protocol guessed = ndpi_guess_undetected_protocol(ndpi_struct,
 								 flow->protocol,
 								 ntohl(flow->lower_ip),
 								 ntohs(flow->lower_port),
 								 ntohl(flow->upper_ip),
 								 ntohs(flow->upper_port));
+   flow->detected_protocol = guessed.master_protocol;
 
 	if (flow->detected_protocol != 0)
 	  guessed_flow_protocols++;
@@ -523,7 +524,7 @@ static unsigned int packet_processing(const u_int64_t time, const struct pcap_pk
   struct ndpi_id_struct *src, *dst;
   struct ndpi_flow *flow;
   struct ndpi_flow_struct *ndpi_flow = NULL;
-  u_int32_t protocol = 0;
+  u_int16_t protocol = 0;
   u_int16_t frag_off = ntohs(iph->frag_off);
 
   flow = get_ndpi_flow(header, iph, ipsize);
@@ -542,7 +543,8 @@ static unsigned int packet_processing(const u_int64_t time, const struct pcap_pk
   // only handle unfragmented packets
   if ((frag_off & 0x3FFF) == 0) {
     // here the actual detection is performed
-    protocol = ndpi_detection_process_packet(ndpi_struct, ndpi_flow, (uint8_t *) iph, ipsize, time, src, dst);
+    ndpi_protocol detected = ndpi_detection_process_packet(ndpi_struct, ndpi_flow, (uint8_t *) iph, ipsize, time, src, dst);
+    protocol = detected.master_protocol;
   } else {
     static u_int8_t frag_warning_used = 0;
 
